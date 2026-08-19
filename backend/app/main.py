@@ -1,3 +1,11 @@
+import os
+import sys
+
+# Ensure backend root is on sys.path regardless of working directory
+backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -47,7 +55,7 @@ if settings.CORS_ORIGINS:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
-    allow_origin_regex=r"^https?://.*(\.vercel\.app|\.onrender\.com|\.netlify\.app|\.pages\.dev|localhost)(:\d+)?$",
+    allow_origin_regex=r".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
