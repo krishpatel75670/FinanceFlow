@@ -5,9 +5,15 @@ from app.core.config import settings
 
 
 
+# Normalise postgres:// -> postgresql:// for SQLAlchemy compatibility (common with cloud DBs like Supabase/Neon/Render)
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(
-    settings.DATABASE_URL,
-    echo=True
+    db_url if db_url else "sqlite:///./financeflow.db",
+    echo=False,
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(
