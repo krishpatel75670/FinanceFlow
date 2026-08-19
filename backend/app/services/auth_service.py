@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.user import User
+from app.models.transactions import Transaction  # noqa: F401
 from app.schemas.user import UserCreate
 from app.utils.hashing import hash_password
 
