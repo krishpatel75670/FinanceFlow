@@ -40,6 +40,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError, OperationalError
+
+
+@app.exception_handler(OperationalError)
+async def db_operational_error_handler(request: Request, exc: OperationalError):
+    error_detail = str(exc.orig) if hasattr(exc, "orig") else str(exc)
+    print(f"Database OperationalError: {error_detail}")
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": f"Database connection error: Unable to communicate with the database. Please verify DATABASE_URL in your Vercel Environment Variables. ({error_detail})"
+        },
+    )
+
+
+@app.exception_handler(SQLAlchemyError)
+async def db_sqlalchemy_error_handler(request: Request, exc: SQLAlchemyError):
+    print(f"Database SQLAlchemyError: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Database error occurred: {str(exc)}"},
+    )
+
+
 app.include_router(auth_router)
 app.include_router(transaction_router)
 
