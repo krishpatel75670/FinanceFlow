@@ -12,44 +12,50 @@
     },
     "rewrites": [
         {
-            "source": "/auth(/.*)?",
+            "source": "/auth/(.*)",
             "destination": {
-                "type": "service",
                 "service": "backend"
             }
         },
         {
-            "source": "/transactions(/.*)?",
+            "source": "/transactions/(.*)",
             "destination": {
-                "type": "service",
                 "service": "backend"
             }
         },
         {
-            "source": "/docs(/.*)?",
+            "source": "/docs",
             "destination": {
-                "type": "service",
+                "service": "backend"
+            }
+        },
+        {
+            "source": "/docs/(.*)",
+            "destination": {
                 "service": "backend"
             }
         },
         {
             "source": "/openapi.json",
             "destination": {
-                "type": "service",
                 "service": "backend"
             }
         },
         {
-            "source": "/api(/.*)?",
+            "source": "/health",
             "destination": {
-                "type": "service",
+                "service": "backend"
+            }
+        },
+        {
+            "source": "/api/(.*)",
+            "destination": {
                 "service": "backend"
             }
         },
         {
             "source": "/(.*)",
             "destination": {
-                "type": "service",
                 "service": "frontend"
             }
         }
