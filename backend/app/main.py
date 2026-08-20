@@ -45,26 +45,24 @@ app = FastAPI(
 # Configure CORS origins
 cors_origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:80",
-    "http://127.0.0.1:80",
-    "http://localhost",
-    "http://127.0.0.1",
+    "https://finance-flow-bay-beta.vercel.app",
 ]
+
 if settings.CORS_ORIGINS:
-    cors_origins.extend([origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()])
+    cors_origins.extend(
+        origin.strip()
+        for origin in settings.CORS_ORIGINS.split(",")
+        if origin.strip()
+    )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
-    allow_origin_regex=r".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.exception_handler(OperationalError)
 async def db_operational_error_handler(request: Request, exc: OperationalError):
