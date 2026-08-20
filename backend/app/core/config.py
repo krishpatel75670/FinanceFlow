@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: str = ""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "backend/.env", "../.env"),
         extra="ignore"
     )
 

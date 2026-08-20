@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
     # Safely create tables at startup without breaking module imports
     try:
         Base.metadata.create_all(bind=engine)
-        print(f"Database tables checked/created successfully using engine: {engine.url.scheme}")
+        print(f"Database tables checked/created successfully using engine: {engine.url.drivername}")
     except Exception as e:
         print(f"Database initialization notice: {e}")
     yield
@@ -93,7 +93,7 @@ def read_root():
         "message": "Welcome to FinanceFlow API",
         "docs": "/docs",
         "health": "/health",
-        "database_backend": engine.url.scheme,
+        "database_backend": engine.url.drivername,
     }
 
 
@@ -104,12 +104,12 @@ def health_check(db: Session = Depends(get_db)):
         return {
             "status": "healthy",
             "database": "connected",
-            "database_type": engine.url.scheme,
+            "database_type": engine.url.drivername,
         }
     except Exception as e:
         return {
             "status": "degraded",
             "database": "error",
-            "database_type": engine.url.scheme,
+            "database_type": engine.url.drivername,
             "error": str(e),
         }
