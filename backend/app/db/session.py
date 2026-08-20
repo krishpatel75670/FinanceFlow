@@ -1,4 +1,3 @@
-from typing import Any
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -10,20 +9,14 @@ db_url = settings.DATABASE_URL.strip() if settings.DATABASE_URL else ""
 if not db_url:
     raise RuntimeError("DATABASE_URL environment variable is not set")
 
-# Normalize postgres:// -> postgresql://
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-# SQLAlchemy engine
-engine_kwargs: dict[str, Any] = {
-    "echo": False,
-    "pool_pre_ping": True,
-    "pool_recycle": 300,
-}
-
 engine = create_engine(
     db_url,
-    **engine_kwargs,
+    echo=False,
+    pool_pre_ping=True,
+    pool_recycle=300,
 )
 
 SessionLocal = sessionmaker(
