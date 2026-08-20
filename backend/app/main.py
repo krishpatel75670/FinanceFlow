@@ -21,14 +21,18 @@ from app.db import base  # noqa: F401
 from app.api.auth import router as auth_router
 from app.api.transaction import router as transaction_router
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
         Base.metadata.create_all(bind=engine)
-        print(f"Database tables checked/created successfully using engine: {engine.url.drivername}")
+        print(
+            f"Database tables checked/created successfully "
+            f"using engine: {engine.url.drivername}"
+        )
     except Exception as e:
-        print(f"Database initialization notice: {e}")
+        print(f"Database initialization failed: {e}")
+        raise
+
     yield
 
 # Also ensure tables exist immediately on serverless cold starts

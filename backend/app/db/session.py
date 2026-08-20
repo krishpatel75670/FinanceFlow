@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 
-db_url = settings.DATABASE_URL.strip() if settings.DATABASE_URL else ""
+db_url = settings.DATABASE_URL.strip()
 
 if not db_url:
     raise RuntimeError("DATABASE_URL environment variable is not set")
