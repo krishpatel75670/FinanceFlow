@@ -24,7 +24,6 @@ from app.api.transaction import router as transaction_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Safely create tables at startup without breaking module imports
     try:
         Base.metadata.create_all(bind=engine)
         print(f"Database tables checked/created successfully using engine: {engine.url.drivername}")
@@ -32,6 +31,11 @@ async def lifespan(app: FastAPI):
         print(f"Database initialization notice: {e}")
     yield
 
+# Also ensure tables exist immediately on serverless cold starts
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"Serverless startup table check notice: {e}")
 
 app = FastAPI(
     title="FinanceFlow API",

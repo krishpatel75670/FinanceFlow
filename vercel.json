@@ -1,63 +1,34 @@
 {
-  "services": {
-    "frontend": {
-      "root": "frontend",
-      "framework": "vite"
-    },
-    "backend": {
-      "root": "backend",
-      "entrypoint": "app/main.py",
-      "framework": "fastapi"
-    }
-  },
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/auth/(.*)",
-      "destination": {
-        "service": "backend"
-      }
+      "destination": "/api/index.py"
     },
     {
       "source": "/transactions/(.*)",
-      "destination": {
-        "service": "backend"
-      }
-    },
-    {
-      "source": "/docs",
-      "destination": {
-        "service": "backend"
-      }
-    },
-    {
-      "source": "/docs/(.*)",
-      "destination": {
-        "service": "backend"
-      }
-    },
-    {
-      "source": "/openapi.json",
-      "destination": {
-        "service": "backend"
-      }
+      "destination": "/api/index.py"
     },
     {
       "source": "/health",
-      "destination": {
-        "service": "backend"
-      }
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/docs",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/openapi.json",
+      "destination": "/api/index.py"
     },
     {
       "source": "/api/(.*)",
-      "destination": {
-        "service": "backend"
-      }
+      "destination": "/api/index.py"
     },
     {
       "source": "/(.*)",
-      "destination": {
-        "service": "frontend"
-      }
+      "destination": "/$1"
     }
   ]
 }
