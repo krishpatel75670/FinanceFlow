@@ -35,11 +35,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-# Also ensure tables exist immediately on serverless cold starts
-try:
-    Base.metadata.create_all(bind=engine)
-except Exception as e:
-    print(f"Serverless startup table check notice: {e}")
 
 app = FastAPI(
     title="FinanceFlow API",
